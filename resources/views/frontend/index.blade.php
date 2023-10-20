@@ -1,7 +1,7 @@
 @extends('frontend.main_master')
 @section('content')
 @section('title')
-E Market
+Home Easy Online Shop
 @endsection
 
 
@@ -17,12 +17,12 @@ E Market
 
 
         <!-- === == TOP NAVIGATION == ==== -->
-       
+       @include('frontend.common.vertical_menu')
         <!-- ===== ==== TOP NAVIGATION : END ==== ===== --> 
         
         
         <!-- === ===== HOT DEALS ======= ===== -->
-        
+        @include('frontend.common.hot_deals')
         <!-- === === HOT DEALS: END ====== ===== --> 
         
         <!-- ============================================== SPECIAL OFFER ============================================== -->
@@ -37,13 +37,13 @@ E Market
               <div class="item">
                 <div class="products special-product">
 
-              
+              @foreach($special_offer as $product)
   <div class="product">
     <div class="product-micro">
       <div class="row product-micro-row">
         <div class="col col-xs-5">
           <div class="product-image">
-            <div class="image"> <a href="#" alt=""> </a> </div>
+            <div class="image"> <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}"> <img src="{{ asset($product->product_thambnail) }}" alt=""> </a> </div>
             <!-- /.image --> 
             
           </div>
@@ -52,9 +52,9 @@ E Market
         <!-- /.col -->
         <div class="col col-xs-7">
           <div class="product-info">
-            <h3 class="name"><a href="{#"></a></h3>
+            <h3 class="name"><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}">@if(session()->get('language') == 'hindi') {{ $product->product_name_hin }} @else {{ $product->product_name_en }} @endif</a></h3>
             <div class="rating rateit-small"></div>
- <div class="product-price"> <span class="price"> </span> </div>
+ <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span> </div>
             <!-- /.product-price --> 
             
           </div>
@@ -66,7 +66,7 @@ E Market
     <!-- /.product-micro --> 
     
   </div>
-                   <!-- // end special offer foreach -->
+                  @endforeach <!-- // end special offer foreach -->
 
 
 
@@ -94,7 +94,7 @@ E Market
 
 
         <!-- ===== ===== PRODUCT TAGS ==== ====== -->
-   
+   @include('frontend.common.product_tags')
         <!-- ==== ===== PRODUCT TAGS : END ======= ==== --> 
 
 
@@ -111,13 +111,13 @@ E Market
               <div class="item">
                 <div class="products special-product">
 
-   
+   @foreach($special_deals as $product)
       <div class="product">
         <div class="product-micro">
           <div class="row product-micro-row">
             <div class="col col-xs-5">
               <div class="product-image">
-                <div class="image"> <a href="#"> <img src="#"  alt=""> </a> </div>
+                <div class="image"> <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}"> <img src="{{ asset($product->product_thambnail) }}"  alt=""> </a> </div>
                 <!-- /.image --> 
                 
               </div>
@@ -126,9 +126,9 @@ E Market
             <!-- /.col -->
             <div class="col col-xs-7">
               <div class="product-info">
-                <h3 class="name"><a href="#"></a></h3>
+                <h3 class="name"><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}">@if(session()->get('language') == 'hindi') {{ $product->product_name_hin }} @else {{ $product->product_name_en }} @endif</a></h3>
                 <div class="rating rateit-small"></div>
-                <div class="product-price"> <span class="price">  </span> </div>
+                <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span> </div>
                 <!-- /.product-price --> 
                 
               </div>
@@ -140,7 +140,7 @@ E Market
         <!-- /.product-micro --> 
         
       </div>
-       <!-- // end special deals foreach -->
+      @endforeach <!-- // end special deals foreach -->
 
 
 
@@ -175,7 +175,7 @@ E Market
         <!-- ============================================== NEWSLETTER: END ============================================== --> 
         
         <!-- == ==== Testimonials=== ===== -->
-         
+         @include('frontend.common.testimonials')
         
         <!-- === ======== Testimonials: END ==== =========== -->
         
@@ -195,13 +195,13 @@ E Market
         <div id="hero">
           <div id="owl-main" class="owl-carousel owl-inner-nav owl-ui-sm">
             
-    
-    <div class="item" style="#">
+    @foreach($sliders as $slider)
+    <div class="item" style="background-image: url({{ asset($slider->slider_img) }});">
       <div class="container-fluid">
         <div class="caption bg-color vertical-center text-left">
           
-          <div class="big-text fadeInDown-1"></div>
-          <div class="excerpt fadeInDown-2 hidden-xs"> <span></span> </div>
+          <div class="big-text fadeInDown-1">{{ $slider->title }} </div>
+          <div class="excerpt fadeInDown-2 hidden-xs"> <span>{{ $slider->description }}</span> </div>
           <div class="button-holder fadeInDown-3"> <a href="index.php?page=single-product" class="btn-lg btn btn-uppercase btn-primary shop-now-button">Shop Now</a> </div>
         </div>
         <!-- /.caption --> 
@@ -209,7 +209,7 @@ E Market
       <!-- /.container-fluid --> 
     </div>
     <!-- /.item -->
-    
+    @endforeach
            
             
           </div>
@@ -290,9 +290,9 @@ E Market
             <ul class="nav nav-tabs nav-tab-line pull-right" id="new-products-1">
               <li class="active"><a data-transition-type="backSlide" href="#all" data-toggle="tab">All</a></li>
 
-              
-  <li><a data-transition-type="backSlide" href="##" data-toggle="tab"></a></li>
-              @
+              @foreach($categories as $category)
+  <li><a data-transition-type="backSlide" href="#category{{ $category->id }}" data-toggle="tab">{{ $category->category_name_en }}</a></li>
+              @endforeach
               <!-- <li><a data-transition-type="backSlide" href="#laptop" data-toggle="tab">Electronics</a></li>
 
               <li><a data-transition-type="backSlide" href="#apple" data-toggle="tab">Shoes</a></li> -->
@@ -307,39 +307,42 @@ E Market
               <div class="product-slider">
                 <div class="owl-carousel home-owl-carousel custom-carousel owl-theme" data-item="4">
 
-                  
+                  @foreach($products as $product)
                   <div class="item item-carousel">
                     <div class="products">
                       <div class="product">
                         <div class="product-image">
-       <div class="image"> <a href="{#" alt=""></a> </div>
+       <div class="image"> <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}"><img  src="{{ asset($product->product_thambnail) }}" alt=""></a> </div>
                           <!-- /.image -->
 
-                        
+        @php
+        $amount = $product->selling_price - $product->discount_price;
+        $discount = ($amount/$product->selling_price) * 100;
+        @endphp                  
                           
           <div>
-            
+            @if ($discount == 0)
             <div class="tag new"><span>new</span></div>
-            
-            <div class="tag hot"><span>#%</span></div>
-            
+            @else
+            <div class="tag hot"><span>{{ round($discount) }}%</span></div>
+            @endif
           </div>
                          </div>
 
                         <!-- /.product-image -->
                         
         <div class="product-info text-left">
-          <h3 class="name"><a href="#">
-
+          <h3 class="name"><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}">
+@if(session()->get('language') == 'hindi') {{ $product->product_name_hin }} @else {{ $product->product_name_en }} @endif
             </a></h3>
           <div class="rating rateit-small"></div>
           <div class="description"></div>
 
-         
-    <div class="product-price"> <span class="price"> # </span> # </div>
-         
- <div class="product-price"> <span class="price"> # </span> <span class="price-before-discount">100</span> </div>
-         
+         @if ($product->discount_price == NULL)
+    <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span>  </div>
+         @else
+ <div class="product-price"> <span class="price"> ${{ $product->discount_price }} </span> <span class="price-before-discount">$ {{ $product->selling_price }}</span> </div>
+         @endif
 
          
           <!-- /.product-price --> 
@@ -352,14 +355,14 @@ E Market
               <li class="add-cart-button btn-group">
 
 
-           <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+           <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
         
         <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
       </li>
 
       
 
-        <button class="btn btn-primary icon" type="button" title="Wishlist" id="" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
+        <button class="btn btn-primary icon" type="button" title="Wishlist" id="{{ $product->id }}" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
 
               <li class="lnk"> <a data-toggle="tooltip" class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal" aria-hidden="true"></i> </a> </li>
             </ul>
@@ -374,7 +377,7 @@ E Market
                     <!-- /.products --> 
                   </div>
                   <!-- /.item -->
-                  <!--  // end all optionproduct foreach  -->
+                  @endforeach<!--  // end all optionproduct foreach  -->
 
 
                   
@@ -389,47 +392,52 @@ E Market
 
 
 
-            
-            <div class="tab-pane" id="#">
+            @foreach($categories as $category)
+            <div class="tab-pane" id="category{{ $category->id }}">
               <div class="product-slider">
                 <div class="owl-carousel home-owl-carousel custom-carousel owl-theme" data-item="4">
 
-
+@php
+  $catwiseProduct = App\Models\Product::where('category_id',$category->id)->orderBy('id','DESC')->get(); 
+@endphp
                   
 
-                  
+                  @forelse($catwiseProduct as $product)
                   <div class="item item-carousel">
                     <div class="products">
                       <div class="product">
                         <div class="product-image">
-                          <div class="image"> <a href="#"><img  src="#" alt=""></a> </div>
+                          <div class="image"> <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}"><img  src="{{ asset($product->product_thambnail) }}" alt=""></a> </div>
                           <!-- /.image -->
 
-                      
+        @php
+        $amount = $product->selling_price - $product->discount_price;
+        $discount = ($amount/$product->selling_price) * 100;
+        @endphp                  
                           
           <div>
-           
+            @if ($product->discount_price == NULL)
             <div class="tag new"><span>new</span></div>
-            
-            <div class="tag hot"><span>0%</span></div>
-            
+            @else
+            <div class="tag hot"><span>{{ round($discount) }}%</span></div>
+            @endif
           </div>
                          </div>
 
                         <!-- /.product-image -->
                         
         <div class="product-info text-left">
-          <h3 class="name"><a href="#">
-
+          <h3 class="name"><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}">
+@if(session()->get('language') == 'hindi') {{ $product->product_name_hin }} @else {{ $product->product_name_en }} @endif
             </a></h3>
           <div class="rating rateit-small"></div>
           <div class="description"></div>
 
-         
-    <div class="product-price"> <span class="price">  </span>  </div>
-         
- <div class="product-price"> <span class="price">  </span> <span class="price-before-discount"></span> </div>
-         
+         @if ($product->discount_price == NULL)
+    <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span>  </div>
+         @else
+ <div class="product-price"> <span class="price"> ${{ $product->discount_price }} </span> <span class="price-before-discount">$ {{ $product->selling_price }}</span> </div>
+         @endif
 
          
           <!-- /.product-price --> 
@@ -441,14 +449,14 @@ E Market
             <ul class="list-unstyled">
               <li class="add-cart-button btn-group">
 
-        <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="#" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+        <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
         
         <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
       </li>
 
       
 
-        <button class="btn btn-primary icon" type="button" title="Wishlist" id="" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
+        <button class="btn btn-primary icon" type="button" title="Wishlist" id="{{ $product->id }}" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
 
 
               <li class="lnk"> <a data-toggle="tooltip" class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal" aria-hidden="true"></i> </a> </li>
@@ -465,10 +473,10 @@ E Market
                   </div>
                   <!-- /.item -->
 
-                  
+                  @empty
                   <h5 class="text-danger">No Product Found</h5>
 
-                  <!--  // end all optionproduct foreach  -->
+                  @endforelse<!--  // end all optionproduct foreach  -->
 
 
                   
@@ -479,7 +487,7 @@ E Market
               <!-- /.product-slider --> 
             </div>
             <!-- /.tab-pane -->
-             <!-- end categor foreach -->
+            @endforeach <!-- end categor foreach -->
 
 
  
@@ -524,39 +532,42 @@ E Market
           <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
 
 
-            
+            @foreach($featured as $product)
             <div class="item item-carousel">
                     <div class="products">
                       <div class="product">
                         <div class="product-image">
-                          <div class="image"> <a href="#" alt=""></a> </div>
+                          <div class="image"> <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}"><img  src="{{ asset($product->product_thambnail) }}" alt=""></a> </div>
                           <!-- /.image -->
 
-                      
+        @php
+        $amount = $product->selling_price - $product->discount_price;
+        $discount = ($amount/$product->selling_price) * 100;
+        @endphp                  
                           
           <div>
-            
+            @if ($product->discount_price == $product->selling_price)
             <div class="tag new"><span>new</span></div>
-            
-            <div class="tag hot"><span>%</span></div>
-            
+            @else
+            <div class="tag hot"><span>{{ round($discount) }}%</span></div>
+            @endif
           </div>
                          </div>
 
                         <!-- /.product-image -->
                         
         <div class="product-info text-left">
-          <h3 class="name"><a href="#">
-
+          <h3 class="name"><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}">
+@if(session()->get('language') == 'hindi') {{ $product->product_name_hin }} @else {{ $product->product_name_en }} @endif
             </a></h3>
           <div class="rating rateit-small"></div>
           <div class="description"></div>
 
-        
-    <div class="product-price"> <span class="price"> 100 </span>  </div>
-   
- <div class="product-price"> <span class="price"> # </span> <span class="price-before-discount">#</span> </div>
-        
+         @if ($product->discount_price == $product->selling_price)
+    <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span>  </div>
+         @else
+ <div class="product-price"> <span class="price"> ${{ $product->discount_price }} </span> <span class="price-before-discount">$ {{ $product->selling_price }}</span> </div>
+         @endif
 
          
           <!-- /.product-price --> 
@@ -568,14 +579,14 @@ E Market
     <ul class="list-unstyled">
       <li class="add-cart-button btn-group">
        
-        <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+        <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
         
         <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
       </li>
 
       
 
-        <button class="btn btn-primary icon" type="button" title="Wishlist" id="" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
+        <button class="btn btn-primary icon" type="button" title="Wishlist" id="{{ $product->id }}" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
 
       
 
@@ -592,7 +603,7 @@ E Market
                     <!-- /.products --> 
                   </div>
             <!-- /.item -->
-   
+            @endforeach
             
            
           </div>
@@ -609,44 +620,47 @@ E Market
 
         <section class="section featured-product wow fadeInUp">
           <h3 class="section-title">
-
+@if(session()->get('language') == 'hindi') {{ $skip_category_0->category_name_hin }} @else {{ $skip_category_0->category_name_en }} @endif
             </h3>
           <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
 
 
-            
+            @foreach($skip_product_0 as $product)
             <div class="item item-carousel">
                     <div class="products">
                       <div class="product">
                         <div class="product-image">
-                          <div class="image"> <a href="#"><img  src="#" alt=""></a> </div>
+                          <div class="image"> <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}"><img  src="{{ asset($product->product_thambnail) }}" alt=""></a> </div>
                           <!-- /.image -->
 
-                    
+        @php
+        $amount = $product->selling_price - $product->discount_price;
+        $discount = ($amount/$product->selling_price) * 100;
+        @endphp                  
                           
           <div>
-            
+            @if ($product->discount_price == NULL)
             <div class="tag new"><span>new</span></div>
-            
-            <div class="tag hot"><span>89%</span></div>
-            
+            @else
+            <div class="tag hot"><span>{{ round($discount) }}%</span></div>
+            @endif
           </div>
                          </div>
 
                         <!-- /.product-image -->
                         
         <div class="product-info text-left">
-          <h3 class="name"><a href="#">
-
+          <h3 class="name"><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}">
+@if(session()->get('language') == 'hindi') {{ $product->product_name_hin }} @else {{ $product->product_name_en }} @endif
             </a></h3>
           <div class="rating rateit-small"></div>
           <div class="description"></div>
 
-         
-    <div class="product-price"> <span class="price"> 100 </span>  </div>
-         
- <div class="product-price"> <span class="price"> $100 </span> <span class="price-before-discount">$ 100</span> </div>
-         
+         @if ($product->discount_price == NULL)
+    <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span>  </div>
+         @else
+ <div class="product-price"> <span class="price"> ${{ $product->discount_price }} </span> <span class="price-before-discount">$ {{ $product->selling_price }}</span> </div>
+         @endif
 
          
           <!-- /.product-price --> 
@@ -659,14 +673,14 @@ E Market
               <li class="add-cart-button btn-group">
 
 
-          <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="#" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+          <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
         
         <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
       </li>
 
       
 
-        <button class="btn btn-primary icon" type="button" title="Wishlist" id="#" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
+        <button class="btn btn-primary icon" type="button" title="Wishlist" id="{{ $product->id }}" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
 
 
               <li class="lnk"> <a data-toggle="tooltip" class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal" aria-hidden="true"></i> </a> </li>
@@ -682,7 +696,7 @@ E Market
                     <!-- /.products --> 
                   </div>
             <!-- /.item -->
-            
+            @endforeach
             
            
           </div>
@@ -702,44 +716,47 @@ E Market
 
         <section class="section featured-product wow fadeInUp">
           <h3 class="section-title">
-
+@if(session()->get('language') == 'hindi') {{ $skip_category_1->category_name_hin }} @else {{ $skip_category_1->category_name_en }} @endif
             </h3>
           <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
 
 
-            
+            @foreach($skip_product_1 as $product)
             <div class="item item-carousel">
                     <div class="products">
                       <div class="product">
                         <div class="product-image">
-                          <div class="image"> <a href="#"><img  src="#" alt=""></a> </div>
+                          <div class="image"> <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}"><img  src="{{ asset($product->product_thambnail) }}" alt=""></a> </div>
                           <!-- /.image -->
 
-                      
+        @php
+        $amount = $product->selling_price - $product->discount_price;
+        $discount = ($amount/$product->selling_price) * 100;
+        @endphp                  
                           
           <div>
-            
+            @if ($product->discount_price == NULL)
             <div class="tag new"><span>new</span></div>
-            
-            <div class="tag hot"><span>35%</span></div>
-            
+            @else
+            <div class="tag hot"><span>{{ round($discount) }}%</span></div>
+            @endif
           </div>
                          </div>
 
                         <!-- /.product-image -->
                         
         <div class="product-info text-left">
-          <h3 class="name"><a href="#">
-
+          <h3 class="name"><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}">
+@if(session()->get('language') == 'hindi') {{ $product->product_name_hin }} @else {{ $product->product_name_en }} @endif
             </a></h3>
           <div class="rating rateit-small"></div>
           <div class="description"></div>
 
-         
-    <div class="product-price"> <span class="price"> 100 </span>  </div>
-         
- <div class="product-price"> <span class="price">  </span> <span class="price-before-discount"></span> </div>
-
+         @if ($product->discount_price == NULL)
+    <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span>  </div>
+         @else
+ <div class="product-price"> <span class="price"> ${{ $product->discount_price }} </span> <span class="price-before-discount">$ {{ $product->selling_price }}</span> </div>
+         @endif
 
          
           <!-- /.product-price --> 
@@ -752,14 +769,14 @@ E Market
               <li class="add-cart-button btn-group">
 
 
-           <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+           <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
         
         <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
       </li>
 
       
 
-        <button class="btn btn-primary icon" type="button" title="Wishlist" id="#" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
+        <button class="btn btn-primary icon" type="button" title="Wishlist" id="{{ $product->id }}" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
 
 
               <li class="lnk"> <a data-toggle="tooltip" class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal" aria-hidden="true"></i> </a> </li>
@@ -775,7 +792,7 @@ E Market
                     <!-- /.products --> 
                   </div>
             <!-- /.item -->
-     
+            @endforeach
             
            
           </div>
@@ -834,44 +851,47 @@ E Market
 
         <section class="section featured-product wow fadeInUp">
           <h3 class="section-title">
-
+@if(session()->get('language') == 'hindi') {{ $skip_brand_1->brand_name_hin }} @else {{ $skip_brand_1->brand_name_en }} @endif
             </h3>
           <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
 
 
-           
+            @foreach($skip_brand_product_1 as $product)
             <div class="item item-carousel">
                     <div class="products">
                       <div class="product">
                         <div class="product-image">
-                          <div class="image"> <a href="" alt=""></a> </div>
+                          <div class="image"> <a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}"><img  src="{{ asset($product->product_thambnail) }}" alt=""></a> </div>
                           <!-- /.image -->
 
-                      
+        @php
+        $amount = $product->selling_price - $product->discount_price;
+        $discount = ($amount/$product->selling_price) * 100;
+        @endphp                  
                           
           <div>
-           
+            @if ($product->discount_price == NULL)
             <div class="tag new"><span>new</span></div>
-            
-            <div class="tag hot"><span>%</span></div>
-            
+            @else
+            <div class="tag hot"><span>{{ round($discount) }}%</span></div>
+            @endif
           </div>
                          </div>
 
                         <!-- /.product-image -->
                         
         <div class="product-info text-left">
-          <h3 class="name"><a href="#">
-
+          <h3 class="name"><a href="{{ url('product/details/'.$product->id.'/'.$product->product_slug_en ) }}">
+@if(session()->get('language') == 'hindi') {{ $product->product_name_hin }} @else {{ $product->product_name_en }} @endif
             </a></h3>
           <div class="rating rateit-small"></div>
           <div class="description"></div>
 
-         
-    <div class="product-price"> <span class="price"> </span>  </div>
-         
- <div class="product-price"> <span class="price">  </span> <span class="price-before-discount"></span> </div>
-        
+         @if ($product->discount_price == NULL)
+    <div class="product-price"> <span class="price"> ${{ $product->selling_price }} </span>  </div>
+         @else
+ <div class="product-price"> <span class="price"> ${{ $product->discount_price }} </span> <span class="price-before-discount">$ {{ $product->selling_price }}</span> </div>
+         @endif
 
          
           <!-- /.product-price --> 
@@ -883,14 +903,14 @@ E Market
             <ul class="list-unstyled">
               <li class="add-cart-button btn-group">
                 
-               <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="#" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
+               <button class="btn btn-primary icon" type="button" title="Add Cart" data-toggle="modal" data-target="#exampleModal" id="{{ $product->id }}" onclick="productView(this.id)"> <i class="fa fa-shopping-cart"></i> </button>
         
         <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
       </li>
 
       
 
-        <button class="btn btn-primary icon" type="button" title="Wishlist" id="" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
+        <button class="btn btn-primary icon" type="button" title="Wishlist" id="{{ $product->id }}" onclick="addToWishList(this.id)"> <i class="fa fa-heart"></i> </button>
 
               <li class="lnk"> <a data-toggle="tooltip" class="add-to-cart" href="detail.html" title="Compare"> <i class="fa fa-signal" aria-hidden="true"></i> </a> </li>
             </ul>
@@ -905,7 +925,8 @@ E Market
                     <!-- /.products --> 
                   </div>
             <!-- /.item -->
- 
+            @endforeach
+            
            
           </div>
           <!-- /.home-owl-carousel --> 
@@ -1185,11 +1206,11 @@ E Market
             <div class="owl-carousel blog-slider custom-carousel">
               
 
- 
+
               <div class="item">
                 <div class="blog-post">
                   <div class="blog-post-image">
-                    <div class="image"> <a href="blog.html"><img src="#" alt=""></a> </div>
+                    <div class="image"> <a href="blog.html"><img src="" alt=""></a> </div>
                   </div>
                   <!-- /.blog-post-image -->
                   
@@ -1202,15 +1223,14 @@ E Market
                     <p class="text"></p>
 
 
-                    <a href="{" class="lnk btn btn-primary">Read more</a> </div>
+                    <a href="" class="lnk btn btn-primary">Read more</a> </div>
                   <!-- /.blog-post-info --> 
                   
                 </div>
                 <!-- /.blog-post --> 
               </div>
               <!-- /.item -->
-        
-             
+     
               
             </div>
             <!-- /.owl-carousel --> 
@@ -1487,7 +1507,7 @@ E Market
     </div>
     <!-- /.row --> 
     <!-- ============================================== BRANDS CAROUSEL ============================================== -->
-    @include('frontend.body.brands')
+  @include('frontend.body.brands')
     <!-- /.logo-slider --> 
     <!-- ============================================== BRANDS CAROUSEL : END ============================================== --> 
   </div>

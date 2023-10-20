@@ -190,3 +190,101 @@ Route::post('/user/profile/store', [IndexController::class, 'UserProfileStore'])
 Route::get('/user/change/password', [IndexController::class, 'UserChangePassword'])->name('change.password');
 
 Route::post('/user/password/update', [IndexController::class, 'UserPasswordUpdate'])->name('user.password.update');
+
+
+
+
+//// Frontend All Routes /////
+/// Multi Language All Routes ////
+
+Route::get('/language/hindi', [LanguageController::class, 'Hindi'])->name('hindi.language');
+
+Route::get('/language/english', [LanguageController::class, 'English'])->name('english.language');
+
+
+/////// Product Routes For FrontEnd  /////////////
+
+// Frontend Product Details Page url 
+Route::get('/product/details/{id}/{slug}', [IndexController::class, 'ProductDetails']);
+
+
+// Frontend Product Tags Page 
+Route::get('/product/tag/{tag}', [IndexController::class, 'TagWiseProduct']);
+
+// Frontend SubCategory wise Data
+Route::get('/subcategory/product/{subcat_id}/{slug}', [IndexController::class, 'SubCatWiseProduct']);
+
+// Frontend Sub-SubCategory wise Data
+Route::get('/subsubcategory/product/{subsubcat_id}/{slug}', [IndexController::class, 'SubSubCatWiseProduct']);
+
+
+// Product View Modal with Ajax
+Route::get('/product/view/modal/{id}', [IndexController::class, 'ProductViewAjax']);
+
+// Add to Cart Store Data
+Route::post('/cart/data/store/{id}', [CartController::class, 'AddToCart']);
+
+// Get Data from mini cart
+Route::get('/product/mini/cart/', [CartController::class, 'AddMiniCart']);
+
+// Remove mini cart
+Route::get('/minicart/product-remove/{rowId}', [CartController::class, 'RemoveMiniCart']);
+
+// Add to Wishlist
+Route::post('/add-to-wishlist/{product_id}', [CartController::class, 'AddToWishlist']);
+
+/////////////////////  User Must Login  ////
+Route::group(['prefix'=>'user','middleware' => ['user','auth'],'namespace'=>'User'],function(){
+
+// Wishlist page
+Route::get('/wishlist', [WishlistController::class, 'ViewWishlist'])->name('wishlist');
+
+Route::get('/get-wishlist-product', [WishlistController::class, 'GetWishlistProduct']);
+
+Route::get('/wishlist-remove/{id}', [WishlistController::class, 'RemoveWishlistProduct']);
+
+Route::post('/stripe/order', [StripeController::class, 'StripeOrder'])->name('stripe.order');
+
+Route::post('/cash/order', [CashController::class, 'CashOrder'])->name('cash.order');
+
+Route::get('/my/orders', [AllUserController::class, 'MyOrders'])->name('my.orders');
+
+Route::get('/order_details/{order_id}', [AllUserController::class, 'OrderDetails']);
+
+Route::get('/invoice_download/{order_id}', [AllUserController::class, 'InvoiceDownload']);
+
+Route::post('/return/order/{order_id}', [AllUserController::class, 'ReturnOrder'])->name('return.order');
+
+Route::get('/return/order/list', [AllUserController::class, 'ReturnOrderList'])->name('return.order.list');
+
+Route::get('/cancel/orders', [AllUserController::class, 'CancelOrders'])->name('cancel.orders');
+    
+
+/// Order Traking Route 
+Route::post('/order/tracking', [AllUserController::class, 'OrderTraking'])->name('order.tracking');    
+
+});
+
+
+
+ // My Cart Page All Routes
+Route::get('/mycart', [CartPageController::class, 'MyCart'])->name('mycart');
+
+Route::get('/user/get-cart-product', [CartPageController::class, 'GetCartProduct']);
+
+Route::get('/user/cart-remove/{rowId}', [CartPageController::class, 'RemoveCartProduct']);
+
+Route::get('/cart-increment/{rowId}', [CartPageController::class, 'CartIncrement']);
+
+Route::get('/cart-decrement/{rowId}', [CartPageController::class, 'CartDecrement']);
+
+
+// Checkout Routes 
+
+Route::get('/checkout', [CartController::class, 'CheckoutCreate'])->name('checkout');
+
+Route::get('/district-get/ajax/{division_id}', [CheckoutController::class, 'DistrictGetAjax']);
+
+Route::get('/state-get/ajax/{district_id}', [CheckoutController::class, 'StateGetAjax']);
+
+Route::post('/checkout/store', [CheckoutController::class, 'CheckoutStore'])->name('checkout.store');
